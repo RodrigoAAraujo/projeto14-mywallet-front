@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SignInForm from "../Components/SignInForm";
+import SignInForm from "../Components/SigninForm";
 import { DarkPurple, White } from "../Settings/colors";
 
 export default function SignInPage() {

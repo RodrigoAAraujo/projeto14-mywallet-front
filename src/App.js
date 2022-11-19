@@ -20,7 +20,7 @@ export default function App() {
       <GeneralStyle/>
 
       <Routes>
-        <Route element={<SignInPage/>} path="/sign-in"></Route>
+        <Route element={<SignInPage/>} path="/"></Route>
         <Route element={<SignUpPage/>} path="/sign-up"></Route>
         <Route element={<WalletPage/>} path="/wallet"></Route>
       </Routes>

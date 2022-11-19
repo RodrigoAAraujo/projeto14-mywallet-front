@@ -14,7 +14,6 @@ export default function SignInForm(){
 
     const navigate = useNavigate()
     
-
     async function SingUp(e){
         e.preventDefault()
 
@@ -33,7 +32,7 @@ export default function SignInForm(){
             await axios.post(BackEndServer_SignUp, body)
             navigate("/sign-in")
         }catch(err){
-
+            return err
         }
     }
 
@@ -57,7 +56,7 @@ export default function SignInForm(){
             <PasswordAlert password={password} equal={EqualPasswords}/>
 
             <button className="long" type="submit">Sign up</button>
-            <Link to="/sign-up">Have an account? Sign in</Link>
+            <Link to="/">Have an account? Sign in</Link>
         </form>
     )
 }

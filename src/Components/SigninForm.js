@@ -22,7 +22,7 @@ export default function SignInForm(){
             await axios.post(BackEndServer_SignIn, body)
             navigate("/wallet")
         }catch(err){
-
+            return err
         }
     }
 
