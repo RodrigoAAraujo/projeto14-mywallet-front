@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Gray, White } from "../Settings/colors"
+import { Black, Gray, LightGray, StrongGreen, StrongRed, White } from "../Settings/colors"
 
 export default function WalletHistory({ history }) {
-    const [empty, setEmpty] = useState(true)
-
-    useEffect(() => {
-        if (history.length > 0) {
-            setEmpty(false)
-        }
-    }, [])
 
     const total = 0
 
     return (
-        <WalletStyle empty={empty}>
-            {empty ?
+        <WalletStyle empty={history.length}>
+            {history.length === 0 ?
                 <h2>
                     No history or movimentation yet
                 </h2> :
@@ -36,13 +29,18 @@ export default function WalletHistory({ history }) {
 }
 
 function Action({action}) {
-    const{id, date, title, value} = action
+    const{id, date, description, value, type} = action
 
     return (
-        <ActionStyle>
-            <p>{date}</p>
-            <h3>{title}</h3>
-            <p>{value}</p>
+        <ActionStyle type={type}>
+            <div>
+                <h4>{date}</h4>
+                <h3>{description}</h3>
+            </div>
+            <div>
+                <p>{value}</p>
+                <ion-icon name="close-outline"></ion-icon>
+            </div>
         </ActionStyle>
     )
 }
@@ -54,6 +52,7 @@ const WalletStyle = styled.div`
     width: 90%;
     max-width: 400px;
     min-height: 50vh;
+    max-height: 70vh;
     padding: 10px 15px;
     margin-bottom: 14px;
     
@@ -62,8 +61,6 @@ const WalletStyle = styled.div`
     font-weight: 400;
 
     display: ${props => props.empty ? "flex" : "block"};
-    justify-content: center;
-    align-items: center;
 
 
     h2{
@@ -71,7 +68,6 @@ const WalletStyle = styled.div`
         color: ${Gray};
         text-align: center;
     }
-
 
     footer{
         padding: 20px 15px;
@@ -81,6 +77,7 @@ const WalletStyle = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
+        z-index: 3;
 
         box-shadow: rgba(0,0,0,0.2) 0px -6px 16px 0px;   
         
@@ -90,7 +87,43 @@ const WalletStyle = styled.div`
             font-weight: 700;
         }
     }
+
+    ul{
+        width: 100%;
+        overflow-y: scroll;
+        margin-bottom: 50px;
+        padding-bottom: 5px;
+    }
 `
 
 const ActionStyle = styled.li`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    div{
+        display: flex;
+        align-items: center;
+
+        ion-icon{
+            font-size: 20px;
+            color: ${LightGray};
+            margin-left: 6px;
+            cursor: pointer;
+        }
+    }
+
+    h3{
+        color: ${Black};
+        cursor: pointer;
+    }
+    h4{
+        color: ${LightGray};
+        margin-right: 6px;
+    }
+    p{
+        color: ${props => props.type == "loss"? `${StrongRed}`: `${StrongGreen}`}
+    }
+
+    
 `

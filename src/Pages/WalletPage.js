@@ -5,10 +5,10 @@ import { UserContext } from "../API/user"
 import { BackEndServer_Wallet } from "../Settings/urls"
 import WalletHistory from "../Components/WalletHistory"
 import { useNavigate, useParams } from "react-router-dom"
-import { DarkPurple, White } from "../Settings/colors"
+import { White } from "../Settings/colors"
 
 export default function WalletPage() {
-    const { user, setUser } = useContext(UserContext)
+    const { user, setUser} = useContext(UserContext)
     const navigate = useNavigate()
     const { name } = useParams()
 
@@ -17,25 +17,29 @@ export default function WalletPage() {
     useEffect(() => {
         if (localStorage.getItem("user")) {
             const data = JSON.parse(localStorage.getItem("user"))
+            setUser(data)
 
             if (data.name !== name) {
                 localStorage.removeItem("user")
+                //Anothe thing here
             }
 
-            setUser(data)
+            axios.get(BackEndServer_Wallet, { headers: { Authorization: `Bearer ${data.token}`, User: data.email } })
+            .then(res =>{
+                setHistory(...history, res.data)
+            })
+            .catch(err=>{
+                console.log(err)
+                if(err.response.status === 401){
+                    localStorage.removeItem("user")
+                    navigate("/")
+                }
+            })
+
         } else {
             navigate("/")
         }
 
-        async function CatchData() {
-            try {
-                const promisse = await axios.get(BackEndServer_Wallet, { headers: { Authorization: user.token, User: user.email } })
-                setHistory(promisse)
-            } catch (err) {
-                console.log(err)//Verify token and go back
-            }
-        }
-        CatchData()
     }, [])
 
     return (
@@ -45,7 +49,7 @@ export default function WalletPage() {
                 <ion-icon name="log-out-outline"></ion-icon>
             </header>
             <WalletHistory history={history} />
-            <footer>
+            <footer className="actions">
                 <button className="short" onClick={() => navigate(`/${user.name}/wallet/input`)}>
                     <ion-icon name="add-circle-outline"></ion-icon>
                     <h3>New Income</h3>
@@ -78,7 +82,7 @@ const WalletStyle = styled.main`
         }
     }
 
-    footer{
+    .actions{
         width: 90%;
         max-width: 400px;
         display: flex;

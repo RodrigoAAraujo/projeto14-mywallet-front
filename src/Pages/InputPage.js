@@ -13,23 +13,36 @@ export default function InputPage() {
     const [value, setValue] = useState()
     const [description, setDescription] = useState("")
     const navigate = useNavigate()
-    const {user} = useContext(UserContext)
+    const {setUser} = useContext(UserContext)
 
-    function sendEntry(){
-        const body ={
-            date: dayjs(Date.now).format("DD/MM, hh:mm "),
-            value: value,
-            description: description,
-            type: "profit"
+    function sendEntry(e){
+        e.preventDefault()
+
+        if (localStorage.getItem("user")) {
+            const data = JSON.parse(localStorage.getItem("user"))
+            setUser(data)
+
+            const body ={
+                date: dayjs(Date.now()).format("DD/MM, hh:mm "),
+                value: value,
+                description: description,
+                type: "profit"
+            }
+
+            axios.post(BackEndServer_Wallet, body, {headers: {Authorization: `Bearer ${data.token}`, User: data.email}})
+                .then(res =>{
+                    console.log(res)
+                })
+                .catch(err =>{
+                    if(err.response.status === 401){
+                        localStorage.removeItem("user")
+                        navigate("/")
+                    }
+                })
+
+        }else {
+            navigate("/")
         }
-
-        axios.post(BackEndServer_Wallet, body, {headers: {Authorization: user.token}})
-            .then(res =>{
-
-            })
-            .catch(err =>{
-
-            })
     }
 
 
@@ -40,7 +53,7 @@ export default function InputPage() {
                 <ion-icon name="log-out-outline" onClick={() => navigate(-1)}></ion-icon>
             </header>
 
-            <form>
+            <form onSubmit={(e) => sendEntry(e)}>
                 <CurrencyInput required  placeholder="Value" className="currency-input"
                 decimalsLimit={2} decimalSeparator="." groupSeparator="," prefix="$" allowNegativeValue={false}
                 onChange={(e) => setValue(e.target.value)}  
@@ -49,7 +62,7 @@ export default function InputPage() {
                 <input required type="text" placeholder="Decription" maxLength={50}
                 value={description} onChange={(e) => setDescription(e.target.value)} />
 
-                <button className="long" type="submit" onClick={() => sendEntry()}>Save Entry</button>
+                <button className="long" type="submit">Save Entry</button>
             </form>
         </InputStyle>
     )

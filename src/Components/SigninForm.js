@@ -23,7 +23,7 @@ export default function SignInForm() {
 
         axios.post(BackEndServer_SignIn, body)
             .then((res) => {
-                setUser(res)
+                setUser(res.data)
                 localStorage.setItem("user", JSON.stringify(res.data))
                 navigate(`/${res.data.name}/wallet`)
             })
