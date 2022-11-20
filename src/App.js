@@ -14,6 +14,7 @@ import SignUpPage from "./Pages/SignUpPage.js"
 import WalletPage from "./Pages/WalletPage.js"
 import InputPage from "./Pages/InputPage.js";
 import OutputPage from "./Pages/OutputPage.js";
+import EditPage from "./Pages/EditPage.js";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route element={<WalletPage/>} path="/:name/wallet"></Route>
         <Route element={<InputPage/>} path="/:name/wallet/input"></Route>
         <Route element={<OutputPage/>} path="/:name/wallet/output"></Route>
+        <Route element={<EditPage/>} path="/:name/wallet/edit/:type/:id"></Route>
       </Routes>
 
     </BrowserRouter>

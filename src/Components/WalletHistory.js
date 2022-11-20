@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react"
+import axios from "axios"
+import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import { UserContext } from "../API/user"
 import { Black, Gray, LightGray, StrongGreen, StrongRed, White } from "../Settings/colors"
+import { BackEndServer_Wallet } from "../Settings/urls"
 
 export default function WalletHistory({ history }) {
 
@@ -14,8 +18,9 @@ export default function WalletHistory({ history }) {
                 </h2> :
                 <>
                     <ul>
-                        {history.map((a) => <Action
+                        {history.map((a, index) => <Action
                             action={a}
+                            key={index}
                         />)}
                     </ul>
                     <footer>
@@ -29,17 +34,33 @@ export default function WalletHistory({ history }) {
 }
 
 function Action({action}) {
-    const{id, date, description, value, type} = action
+    const{_id, date, description, value, type} = action
+
+    const {user}= useContext(UserContext)
+    const navigate = useNavigate()
+
+    function deleteItem(){
+        axios.delete(`${BackEndServer_Wallet}/${_id}`, {headers: {Authorization: `Bearer ${user.token}`, User: user.email}})
+            .then(res =>{
+                navigate("/")
+            })
+            .catch(err =>{
+                if(err.response.status === 401){
+                    localStorage.removeItem("user")
+                    navigate("/")
+                }
+            })
+    }
 
     return (
         <ActionStyle type={type}>
             <div>
                 <h4>{date}</h4>
-                <h3>{description}</h3>
+                <h3 onClick={() => navigate(`/${user.name}/wallet/edit/${type}/${_id}`)}>{description}</h3>
             </div>
             <div>
                 <p>{value}</p>
-                <ion-icon name="close-outline"></ion-icon>
+                <ion-icon name="close-outline" onClick={() => deleteItem()}></ion-icon>
             </div>
         </ActionStyle>
     )

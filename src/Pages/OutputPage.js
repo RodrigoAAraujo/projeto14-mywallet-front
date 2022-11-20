@@ -32,7 +32,7 @@ export default function OutputPage() {
             axios.post(BackEndServer_Wallet, body, {headers: {Authorization: data.token, User: data.email}})
                 .then(res =>{
                     console.log(res)
-                    
+                    setDescription("")
                 })
                 .catch(err =>{
                     if(err.response.status === 401){
@@ -57,7 +57,7 @@ export default function OutputPage() {
             <form onSubmit={(e) => sendLoss(e)}>
                 <CurrencyInput required  placeholder="Value" className="currency-input"
                 decimalsLimit={2} decimalSeparator="." groupSeparator="," prefix="-$"
-                onChange={(e) => setValue(e.target.value)}  
+                onChange={(e) => setValue(e.target.value)} 
                 />
 
                 <input required type="text" placeholder="Decription" maxLength={50}
