@@ -25,7 +25,6 @@ export default function SignInForm() {
             .then((res) => {
                 setUser(res)
                 localStorage.setItem("user", JSON.stringify(res.data))
-                console.log(res.data.name)
                 navigate(`/${res.data.name}/wallet`)
             })
             .catch((err) => {
@@ -37,10 +36,10 @@ export default function SignInForm() {
     return (
         <form onSubmit={(e) => SingIn(e)}>
             <input placeholder="E-mail" required type="email"
-                value={email} onChange={(e) => setEmail(e.target.value)} />
+            value={email} onChange={(e) => setEmail(e.target.value)}/>
 
             <input placeholder="Password" required type="password"
-                value={password} onChange={(e) => setPassword(e.target.value)} />
+            value={password} onChange={(e) => setPassword(e.target.value)}/>
 
             <button className="long" type="submit">Sign in</button>
             <Link to="/sign-up">First time? Sign up!</Link>

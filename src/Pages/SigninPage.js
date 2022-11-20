@@ -30,13 +30,7 @@ export default function SignInPage() {
 }
 
 const SignInPageStyle = styled.main`
-    background-color: ${DarkPurple};
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-
-    
 
     header{
         color: ${White};
@@ -51,5 +45,6 @@ const SignInPageStyle = styled.main`
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        width: 100%;
     }
 `

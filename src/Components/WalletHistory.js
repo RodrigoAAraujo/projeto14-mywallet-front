@@ -22,9 +22,7 @@ export default function WalletHistory({ history }) {
                 <>
                     <ul>
                         {history.map((a) => <Action
-                            date={a.date}
-                            title={a.title}
-                            value={a.value}
+                            action={a}
                         />)}
                     </ul>
                     <footer>
@@ -37,7 +35,9 @@ export default function WalletHistory({ history }) {
     )
 }
 
-function Action({ date, title, value }) {
+function Action({action}) {
+    const{id, date, title, value} = action
+
     return (
         <ActionStyle>
             <p>{date}</p>
@@ -52,7 +52,7 @@ const WalletStyle = styled.div`
     border-radius:5px;
     background-color: ${White};
     width: 90%;
-    max-width: 500px;
+    max-width: 400px;
     min-height: 50vh;
     padding: 10px 15px;
     margin-bottom: 14px;

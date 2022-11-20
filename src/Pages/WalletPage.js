@@ -7,31 +7,31 @@ import WalletHistory from "../Components/WalletHistory"
 import { useNavigate, useParams } from "react-router-dom"
 import { DarkPurple, White } from "../Settings/colors"
 
-export default function WalletPage(){
-    const {user, setUser} = useContext(UserContext)
+export default function WalletPage() {
+    const { user, setUser } = useContext(UserContext)
     const navigate = useNavigate()
-    const {name} = useParams()
+    const { name } = useParams()
 
     const [history, setHistory] = useState([])
 
-    useEffect(() =>{
-        if(localStorage.getItem("user")){
+    useEffect(() => {
+        if (localStorage.getItem("user")) {
             const data = JSON.parse(localStorage.getItem("user"))
 
-            if(data.name !== name){
+            if (data.name !== name) {
                 localStorage.removeItem("user")
             }
-    
+
             setUser(data)
-        }else{
+        } else {
             navigate("/")
         }
 
-        async function CatchData(){
-            try{
-                const promisse = await axios.get(BackEndServer_Wallet, {headers: {Authorization: user.token, User: user.email}})
+        async function CatchData() {
+            try {
+                const promisse = await axios.get(BackEndServer_Wallet, { headers: { Authorization: user.token, User: user.email } })
                 setHistory(promisse)
-            }catch(err){
+            } catch (err) {
                 console.log(err)//Verify token and go back
             }
         }
@@ -44,13 +44,13 @@ export default function WalletPage(){
                 <h2>Greeting, {user.name}</h2>
                 <ion-icon name="log-out-outline"></ion-icon>
             </header>
-            <WalletHistory history={history}/>
+            <WalletHistory history={history} />
             <footer>
-                <button className="short">
+                <button className="short" onClick={() => navigate(`/${user.name}/wallet/input`)}>
                     <ion-icon name="add-circle-outline"></ion-icon>
                     <h3>New Income</h3>
                 </button>
-                <button className="short">
+                <button className="short" onClick={() => navigate(`/${user.name}/wallet/output`)}>
                     <ion-icon name="remove-circle-outline"></ion-icon>
                     <h3>New Outcome</h3>
                 </button>
@@ -60,18 +60,12 @@ export default function WalletPage(){
 }
 
 const WalletStyle = styled.main`
-    background-color: ${DarkPurple};
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
     header{
         color:${White};
         display: flex;
         justify-content: space-between;
         width: 90%;
-        max-width: 500px;
+        max-width: 400px;
 
         font-family: 'Raleway', sans-serif;
         font-size: 26px;
@@ -82,5 +76,12 @@ const WalletStyle = styled.main`
             font-size: 32px;
             cursor: pointer;
         }
+    }
+
+    footer{
+        width: 90%;
+        max-width: 400px;
+        display: flex;
+        justify-content: space-between;
     }
 `

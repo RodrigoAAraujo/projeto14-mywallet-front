@@ -1,10 +1,10 @@
 import { createGlobalStyle } from "styled-components";
-import { Black, Gray, LightPurple, White } from "../../Settings/colors";
+import { Black, DarkPurple, Gray, LightPurple, White } from "../../Settings/colors";
 
 const GeneralStyle = createGlobalStyle`
     input{
-        width:90%;
-        max-width: 600px;
+        width:100%;
+        max-width: 500px;
         padding: 12px;
         margin-bottom: 13px;
         border-radius: 5px;
@@ -22,9 +22,14 @@ const GeneralStyle = createGlobalStyle`
         }
     }
 
+    .currency-input{
+        font-family: 'Roboto', sans-serif;
+    }
+
     a{
         cursor: pointer;
         margin-top: 20px;
+        margin-bottom:40px;
 
         font-family: 'Raleway', sans-serif;
         font-size: 15px;
@@ -53,22 +58,32 @@ const GeneralStyle = createGlobalStyle`
     }
 
     .long{
-        width:90%;
-        max-width: 600px;
+        width:100%;
+        max-width: 500px;
         font-size: 20px;
     }
     .short{
-        aspect-ratio: 16/11;
-        min-width: 150px;
+        aspect-ratio: 16/10;
+        min-width: 140px;
+        width:48%;
         font-size: 17px;
-        margin:0px 7px;
 
         text-align: left;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         ion-icon{
             font-size: 24px;
         }
-
+    }
+    main{
+        background-color: ${DarkPurple};
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
 `

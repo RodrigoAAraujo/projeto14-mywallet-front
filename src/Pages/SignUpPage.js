@@ -15,8 +15,6 @@ export default function SignUpPage() {
     
             setUser(data)
             navigate(`/${data.name}/wallet`)
-        }else{
-            navigate("/")
         }
     }, [])
 
@@ -30,12 +28,11 @@ export default function SignUpPage() {
 }
 
 const SignUpPageStyle = styled.main`
-    background-color: ${DarkPurple};
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
 
+    form{
+        width: 100%;
+    }
     header{
         color: ${White};
         font-family: 'Saira Stencil One', cursive;

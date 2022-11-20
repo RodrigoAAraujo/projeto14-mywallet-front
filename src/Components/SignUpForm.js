@@ -22,11 +22,10 @@ export default function SignInForm(){
             email, 
             password,
         }
-        console.log(body)
 
         axios.post(BackEndServer_SignUp, body)
             .then((res) => {
-                console.log(res)
+                //decide Here
             })
             .catch((err) => {
                 console.log(err)
