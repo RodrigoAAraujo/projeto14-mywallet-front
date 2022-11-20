@@ -58,8 +58,17 @@ const GeneralStyle = createGlobalStyle`
         font-size: 20px;
     }
     .short{
-        width: 44%;
+        aspect-ratio: 16/11;
+        min-width: 150px;
+        font-size: 17px;
+        margin:0px 7px;
+
         text-align: left;
+
+        ion-icon{
+            font-size: 24px;
+        }
+
     }
 
 `

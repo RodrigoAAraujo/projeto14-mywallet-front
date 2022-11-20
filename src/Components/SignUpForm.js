@@ -14,13 +14,8 @@ export default function SignInForm(){
 
     const navigate = useNavigate()
     
-    async function SingUp(e){
+    function SingUp(e){
         e.preventDefault()
-
-        if( password !== confirm){
-            setEqualPassword(false)
-            return
-        }
         
         const body = {
             name,
@@ -28,12 +23,14 @@ export default function SignInForm(){
             password,
         }
         console.log(body)
-        try{
-            await axios.post(BackEndServer_SignUp, body)
-            navigate("/sign-in")
-        }catch(err){
-            return err
-        }
+
+        axios.post(BackEndServer_SignUp, body)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     return(

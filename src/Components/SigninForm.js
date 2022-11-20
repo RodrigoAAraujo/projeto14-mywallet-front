@@ -1,38 +1,46 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { UserContext } from "../API/user"
 import { BackEndServer_SignIn } from "../Settings/urls"
 
 
-export default function SignInForm(){
+export default function SignInForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const navigate = useNavigate()
 
-    async function SingIn(e){
+    const {setUser} = useContext(UserContext)
+
+    function SingIn(e) {
         e.preventDefault()
 
         const body = {
-            email, 
+            email,
             password
         }
-        console.log(body)
-        try{
-            await axios.post(BackEndServer_SignIn, body)
-            navigate("/wallet")
-        }catch(err){
-            return err
-        }
+
+        axios.post(BackEndServer_SignIn, body)
+            .then((res) => {
+                setUser(res)
+                localStorage.setItem("user", JSON.stringify(res.data))
+                console.log(res.data.name)
+                navigate(`/${res.data.name}/wallet`)
+            })
+            .catch((err) => {
+                return null
+            })
+
     }
 
-    return(
+    return (
         <form onSubmit={(e) => SingIn(e)}>
             <input placeholder="E-mail" required type="email"
-            value={email} onChange={(e) =>setEmail(e.target.value)}/>
+                value={email} onChange={(e) => setEmail(e.target.value)} />
 
             <input placeholder="Password" required type="password"
-            value={password} onChange={(e) => setPassword(e.target.value)}/>
+                value={password} onChange={(e) => setPassword(e.target.value)} />
 
             <button className="long" type="submit">Sign in</button>
             <Link to="/sign-up">First time? Sign up!</Link>
