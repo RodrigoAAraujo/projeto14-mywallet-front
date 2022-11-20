@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../API/user";
 import SignInForm from "../Components/SigninForm";
-import { DarkPurple, White } from "../Settings/colors";
+import { DarkPurple, StrongRed, White } from "../Settings/colors";
 
 export default function SignInPage() {
     const {setUser} = useContext(UserContext)

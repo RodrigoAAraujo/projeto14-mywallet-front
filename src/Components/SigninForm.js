@@ -8,10 +8,9 @@ import { BackEndServer_SignIn } from "../Settings/urls"
 export default function SignInForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const navigate = useNavigate()
-
     const {setUser} = useContext(UserContext)
+    const [error, setError] = useState("")
 
     function SingIn(e) {
         e.preventDefault()
@@ -28,18 +27,22 @@ export default function SignInForm() {
                 navigate(`/${res.data.name}/wallet`)
             })
             .catch((err) => {
-                return null
+                setError(err.response.data)
+                setEmail("")
+                setPassword("")
             })
 
     }
 
     return (
         <form onSubmit={(e) => SingIn(e)}>
-            <input placeholder="E-mail" required type="email"
-            value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <input placeholder={error.length > 0? error :"E-mail"} className={error.length > 0? "error" : null} 
+            required type="email" value={email} 
+            onChange={(e) => {setEmail(e.target.value)}}/>
 
-            <input placeholder="Password" required type="password"
-            value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <input placeholder={error.length > 0? error :"Password"} className={error.length > 0? "error" : null} 
+            required type="password" value={password} 
+            onChange={(e) => setPassword(e.target.value)}/>
 
             <button className="long" type="submit">Sign in</button>
             <Link to="/sign-up">First time? Sign up!</Link>

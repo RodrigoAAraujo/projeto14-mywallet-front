@@ -10,12 +10,19 @@ export default function SignInForm(){
     const [password, setPassword] = useState("")
     const [confirm, setConfirm] = useState("")
 
-    const [EqualPasswords, setEqualPassword] = useState(true)
-
     const navigate = useNavigate()
+
+    const [shake, setShake] = useState(false)
+    const [extraInfo, setExtraInfo] = useState("")
+    const [created, setCreated] = useState(false)
     
     function SingUp(e){
         e.preventDefault()
+
+        if(password !== confirm){
+            setShake(true)
+            return 
+        }
         
         const body = {
             name,
@@ -25,10 +32,12 @@ export default function SignInForm(){
 
         axios.post(BackEndServer_SignUp, body)
             .then((res) => {
-                //decide Here
+                setShake(true)
+                setCreated(true)
             })
             .catch((err) => {
-                console.log(err)
+                setShake(true)
+                setExtraInfo(err.response.data)
             })
     }
 
@@ -44,12 +53,9 @@ export default function SignInForm(){
             value={password} onChange={(e) => setPassword(e.target.value)}/>
 
             <input placeholder="Confirm Password" required type="password"
-            value={confirm} onChange={(e) => {
-                setConfirm(e.target.value)
-                setEqualPassword(true)
-            }}/>
+            value={confirm} onChange={(e) => {setConfirm(e.target.value)}}/>
 
-            <PasswordAlert password={password} equal={EqualPasswords}/>
+            <PasswordAlert password={password} equal={confirm} extra={extraInfo} shake={shake} setShake={setShake} created={created}/>
 
             <button className="long" type="submit">Sign up</button>
             <Link to="/">Have an account? Sign in</Link>

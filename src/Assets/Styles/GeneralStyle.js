@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { Black, DarkPurple, Gray, LightPurple, White } from "../../Settings/colors";
+import { Black, DarkPurple, Gray, LightPurple, StrongRed, White } from "../../Settings/colors";
 
 const GeneralStyle = createGlobalStyle`
     input{
@@ -25,7 +25,11 @@ const GeneralStyle = createGlobalStyle`
     .currency-input{
         font-family: 'Roboto', sans-serif;
     }
-
+    .error{
+            ::placeholder{
+                color: ${StrongRed};
+            }
+        }
     a{
         cursor: pointer;
         margin-top: 20px;

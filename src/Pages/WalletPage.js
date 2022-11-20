@@ -2,15 +2,14 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { UserContext } from "../API/user"
-import { BackEndServer_Wallet } from "../Settings/urls"
+import { BackEndServer_LogOut, BackEndServer_Wallet } from "../Settings/urls"
 import WalletHistory from "../Components/WalletHistory"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { White } from "../Settings/colors"
 
 export default function WalletPage() {
     const { user, setUser} = useContext(UserContext)
     const navigate = useNavigate()
-    const { name } = useParams()
 
     const [history, setHistory] = useState([])
 
@@ -18,11 +17,6 @@ export default function WalletPage() {
         if (localStorage.getItem("user")) {
             const data = JSON.parse(localStorage.getItem("user"))
             setUser(data)
-
-            if (data.name !== name) {
-                localStorage.removeItem("user")
-                //Anothe thing here
-            }
 
             axios.get(BackEndServer_Wallet, { headers: { Authorization: `Bearer ${data.token}`, User: data.email } })
             .then(res =>{
@@ -39,14 +33,30 @@ export default function WalletPage() {
         } else {
             navigate("/")
         }
-
     }, [])
+
+    function logOut(){
+
+        axios.post(BackEndServer_LogOut, {} ,{headers: {Authorization: `Bearer ${user.token}`, User: user.email}})
+            .then(() => {
+                localStorage.removeItem("user")
+                navigate("/")
+            })
+            .catch(err =>{
+                if(err.response.status === 401){
+                    localStorage.removeItem("user")
+                    navigate("/")
+                }else{
+                    navigate("/")
+                }
+            })
+    }
 
     return (
         <WalletStyle>
             <header>
                 <h2>Greeting, {user.name}</h2>
-                <ion-icon name="log-out-outline"></ion-icon>
+                <ion-icon name="log-out-outline" onClick={() => logOut()}></ion-icon>
             </header>
             <WalletHistory history={history} />
             <footer className="actions">

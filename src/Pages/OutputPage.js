@@ -15,6 +15,8 @@ export default function OutputPage() {
     const navigate = useNavigate()
     const {setUser} = useContext(UserContext)
 
+    const [error, setError] = useState("")
+
     function sendLoss(e){
         e.preventDefault()
 
@@ -31,7 +33,7 @@ export default function OutputPage() {
 
             axios.post(BackEndServer_Wallet, body, {headers: {Authorization: data.token, User: data.email}})
                 .then(res =>{
-                    console.log(res)
+                    setError("")
                     setDescription("")
                 })
                 .catch(err =>{
@@ -39,6 +41,9 @@ export default function OutputPage() {
                         localStorage.removeItem("user")
                         navigate("/")
                     }
+                    setError(err.response.data)
+                    setValue("")
+                    setDescription("")
                 })
 
         }else {
@@ -55,12 +60,13 @@ export default function OutputPage() {
             </header>
 
             <form onSubmit={(e) => sendLoss(e)}>
-                <CurrencyInput required  placeholder="Value" className="currency-input"
+                <CurrencyInput required placeholder="Value" className="currency-input"
                 decimalsLimit={2} decimalSeparator="." groupSeparator="," prefix="-$"
                 onChange={(e) => setValue(e.target.value)} 
                 />
 
-                <input required type="text" placeholder="Decription" maxLength={50}
+                <input required type="text" placeholder={error.length > 0? error :"Description"} 
+                className={error.length > 0? "error" : null} maxLength={50}
                 value={description} onChange={(e) => setDescription(e.target.value)} />
 
                 <button className="long" type="submit">Save Expense</button>

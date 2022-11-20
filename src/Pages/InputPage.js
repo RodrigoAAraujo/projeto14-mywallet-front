@@ -15,6 +15,8 @@ export default function InputPage() {
     const navigate = useNavigate()
     const {setUser} = useContext(UserContext)
 
+    const [error, setError] = useState("")
+
     function sendEntry(e){
         e.preventDefault()
 
@@ -31,7 +33,7 @@ export default function InputPage() {
 
             axios.post(BackEndServer_Wallet, body, {headers: {Authorization: `Bearer ${data.token}`, User: data.email}})
                 .then(res =>{
-                    console.log(res)
+                    setError("")
                     setDescription("")
                 })
                 .catch(err =>{
@@ -39,6 +41,9 @@ export default function InputPage() {
                         localStorage.removeItem("user")
                         navigate("/")
                     }
+                    setError(err.response.data)
+                    setValue("")
+                    setDescription("")
                 })
 
         }else {
@@ -60,7 +65,8 @@ export default function InputPage() {
                 onChange={(e) => setValue(e.target.value)} 
                 />
 
-                <input required type="text" placeholder="Decription" maxLength={50}
+                <input required type="text"  placeholder={error.length > 0? error :"Description"} 
+                className={error.length > 0? "error" : null} maxLength={50}
                 value={description} onChange={(e) => setDescription(e.target.value)} />
 
                 <button className="long" type="submit">Save Entry</button>
