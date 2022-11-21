@@ -7,6 +7,7 @@ import axios from "axios"
 import { BackEndServer_Wallet } from "../Settings/urls"
 import dayjs from "dayjs"
 import { White } from "../Settings/colors"
+import FormStyle from "../Assets/Styles/FormStyle"
 
 
 export default function OutputPage() {
@@ -42,7 +43,6 @@ export default function OutputPage() {
                         navigate("/")
                     }
                     setError(err.response.data)
-                    setValue("")
                     setDescription("")
                 })
 
@@ -53,7 +53,7 @@ export default function OutputPage() {
 
 
     return (
-        <OutputStyle>
+        <FormStyle>
             <header>
                 <h1>New Expense</h1>
                 <ion-icon name="log-out-outline" onClick={() => navigate(-1)}></ion-icon>
@@ -71,29 +71,6 @@ export default function OutputPage() {
 
                 <button className="long" type="submit">Save Expense</button>
             </form>
-        </OutputStyle>
+        </FormStyle>
     )
 }
-
-const OutputStyle = styled.main`
-    header{
-        color:${White};
-        display: flex;
-        justify-content: space-between;
-        width: 90%;
-        max-width: 400px;
-
-        font-family: 'Raleway', sans-serif;
-        font-size: 26px;
-        font-weight: 700;
-        margin: 25px 0px;
-
-        ion-icon{
-            font-size: 32px;
-            cursor: pointer;
-        }
-    }
-    form{
-        max-width: 400px;
-    }
-`

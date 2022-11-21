@@ -7,6 +7,7 @@ import { useContext, useState } from "react"
 import { White } from "../Settings/colors"
 import axios from "axios"
 import dayjs from "dayjs"
+import FormStyle from "../Assets/Styles/FormStyle"
 
 
 export default function EditPage(){
@@ -43,7 +44,6 @@ export default function EditPage(){
                         navigate("/")
                     }
                     setError(err.response.data)
-                    setValue("")
                     setDescription("")
                 })
 
@@ -52,7 +52,7 @@ export default function EditPage(){
         }
     }
     return(
-        <EditStyle>
+        <FormStyle>
             <header>
                 <h1>New {type}</h1>
                 <ion-icon name="log-out-outline" onClick={() => navigate(-1)}></ion-icon>
@@ -70,29 +70,6 @@ export default function EditPage(){
 
                 <button className="long" type="submit">Save {type}</button>
             </form>
-        </EditStyle>
+        </FormStyle>
     )
 }
-
-const EditStyle = styled.main`
-    header{
-        color:${White};
-        display: flex;
-        justify-content: space-between;
-        width: 90%;
-        max-width: 400px;
-
-        font-family: 'Raleway', sans-serif;
-        font-size: 26px;
-        font-weight: 700;
-        margin: 25px 0px;
-
-        ion-icon{
-            font-size: 32px;
-            cursor: pointer;
-        }
-    }
-    form{
-        max-width: 400px;
-    }
-`

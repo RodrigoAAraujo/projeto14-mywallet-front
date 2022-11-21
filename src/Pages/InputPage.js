@@ -1,12 +1,11 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import CurrencyInput from "react-currency-input-field"
-import styled from "styled-components"
 import { UserContext } from "../API/user"
 import axios from "axios"
 import { BackEndServer_Wallet } from "../Settings/urls"
 import dayjs from "dayjs"
-import { White } from "../Settings/colors"
+import FormStyle from "../Assets/Styles/FormStyle"
 
 
 export default function InputPage() {
@@ -42,7 +41,6 @@ export default function InputPage() {
                         navigate("/")
                     }
                     setError(err.response.data)
-                    setValue("")
                     setDescription("")
                 })
 
@@ -53,7 +51,7 @@ export default function InputPage() {
 
 
     return (
-        <InputStyle>
+        <FormStyle>
             <header>
                 <h1>New Entry</h1>
                 <ion-icon name="log-out-outline" onClick={() => navigate(-1)}></ion-icon>
@@ -71,30 +69,6 @@ export default function InputPage() {
 
                 <button className="long" type="submit">Save Entry</button>
             </form>
-        </InputStyle>
+        </FormStyle>
     )
 }
-
-const InputStyle = styled.main`
-    header{
-        color:${White};
-        display: flex;
-        justify-content: space-between;
-        width: 90%;
-        max-width: 400px;
-
-        font-family: 'Raleway', sans-serif;
-        font-size: 26px;
-        font-weight: 700;
-        margin: 25px 0px;
-
-        ion-icon{
-            font-size: 32px;
-            cursor: pointer;
-        }
-    }
-    form{
-        max-width: 400px;
-    }
-
-`

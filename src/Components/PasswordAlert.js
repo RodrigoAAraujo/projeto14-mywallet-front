@@ -25,7 +25,7 @@ export default function PasswordAlert({password, equal, extra, shake, setShake, 
 const PasswordStyle = styled.div`
     background-color: ${White};
     border-radius: 5px;
-    width: 100%;
+    width: 90%;
     max-width: 500px;
 
     font-family: 'Raleway', sans-serif;

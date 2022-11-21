@@ -3,7 +3,7 @@ import { Black, DarkPurple, Gray, LightPurple, StrongRed, White } from "../../Se
 
 const GeneralStyle = createGlobalStyle`
     input{
-        width:100%;
+        width:90%;
         max-width: 500px;
         padding: 12px;
         margin-bottom: 13px;
@@ -62,7 +62,7 @@ const GeneralStyle = createGlobalStyle`
     }
 
     .long{
-        width:100%;
+        width:90%;
         max-width: 500px;
         font-size: 20px;
     }

@@ -1,13 +1,12 @@
 import axios from "axios"
-import { useContext, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import styled from "styled-components"
 import { UserContext } from "../API/user"
-import { Black, Blue, Gray, LighterGray, LightGray, StrongGreen, StrongRed, White } from "../Settings/colors"
+import { Black, Blue, Gray, LighterGray, LightGray, StrongRed, White } from "../Settings/colors"
 import { BackEndServer_Wallet } from "../Settings/urls"
 
 export default function WalletHistory({ history }) {
-
 
     const values = history.map((e) => {
         if (e.type === "loss") {
@@ -43,17 +42,16 @@ export default function WalletHistory({ history }) {
     )
 }
 
-function Action({ action }) {
+function Action({ action}) {
     const { _id, date, description, value, type } = action
-
     const { user } = useContext(UserContext)
     const [deleteScreen, setDeleteScreen] = useState(false)
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
 
     function deleteItem() {
         axios.delete(`${BackEndServer_Wallet}/${_id}`, { headers: { Authorization: `Bearer ${user.token}`, User: user.email } })
-            .then(res => {
+            .then(() => {
                 navigate("/")
             })
             .catch(() => {
@@ -99,7 +97,7 @@ const WalletStyle = styled.div`
     max-width: 400px;
     min-height: 50vh;
     max-height: 70vh;
-    padding: 10px 15px;
+    padding: 5px 10px;
     margin-bottom: 14px;
     
     font-family: 'Raleway', sans-serif;
