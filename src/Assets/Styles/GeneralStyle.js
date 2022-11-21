@@ -33,8 +33,7 @@ const GeneralStyle = createGlobalStyle`
     
     a{
         cursor: pointer;
-        margin-top: 20px;
-        margin-bottom:40px;
+        margin: 20px 0px;
 
         font-family: 'Raleway', sans-serif;
         font-size: 15px;
