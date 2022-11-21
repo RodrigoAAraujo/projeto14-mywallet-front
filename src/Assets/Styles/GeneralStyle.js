@@ -26,10 +26,11 @@ const GeneralStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
     }
     .error{
-            ::placeholder{
-                color: ${StrongRed};
-            }
+        ::placeholder{
+            color: ${StrongRed};
         }
+    }
+    
     a{
         cursor: pointer;
         margin-top: 20px;
