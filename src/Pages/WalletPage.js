@@ -12,7 +12,6 @@ export default function WalletPage() {
     const navigate = useNavigate()
 
     const [history, setHistory] = useState([])
-
     const [render, setRender] = useState(false)
 
     useEffect(() => {
