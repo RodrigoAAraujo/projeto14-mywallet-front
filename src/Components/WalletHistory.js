@@ -1,23 +1,24 @@
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useContext, useState } from "react"
+import { useNavigate} from "react-router-dom"
 import styled from "styled-components"
 import { UserContext } from "../API/user"
 import { Black, Blue, Gray, LighterGray, LightGray, StrongRed, White } from "../Settings/colors"
 import { BackEndServer_Wallet } from "../Settings/urls"
 
-export default function WalletHistory({ history }) {
-
-    const values = history.map((e) => {
-        if (e.type === "loss") {
-            return -Number(e.value.replace("-$", "").replaceAll(",", "").trim())
-        }
-        return Number(e.value.replace("$", "").replace(",", "").trim())
-    })
-
+export default function WalletHistory({ history, render}) {
     let total = 0
 
-    values.forEach((e) => total += e)
+    if(history.length> 0){
+        const values = history.map((e) => {
+            if (e.type === "loss") {
+                return -Number(e.value.replace("-$", "").replaceAll(",", "").trim())
+            }
+            return Number(e.value.replace("$", "").replace(",", "").trim())
+        })
+        values.forEach((e) => total += e)
+    }
+   
 
     return (
         <WalletStyle empty={history.length} color={total}>
@@ -29,6 +30,7 @@ export default function WalletHistory({ history }) {
                     <ul>
                         {history.map((a, index) => <Action
                             action={a}
+                            render={render}
                             key={index}
                         />)}
                     </ul>
@@ -42,7 +44,7 @@ export default function WalletHistory({ history }) {
     )
 }
 
-function Action({ action}) {
+function Action({ action, render}) {
     const { _id, date, description, value, type } = action
     const { user } = useContext(UserContext)
     const [deleteScreen, setDeleteScreen] = useState(false)
@@ -52,7 +54,7 @@ function Action({ action}) {
     function deleteItem() {
         axios.delete(`${BackEndServer_Wallet}/${_id}`, { headers: { Authorization: `Bearer ${user.token}`, User: user.email } })
             .then(() => {
-                navigate("/")
+                render(true)
             })
             .catch(() => {
                 localStorage.removeItem("user")

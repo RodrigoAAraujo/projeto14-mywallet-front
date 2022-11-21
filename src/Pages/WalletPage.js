@@ -8,45 +8,47 @@ import { useNavigate } from "react-router-dom"
 import { White } from "../Settings/colors"
 
 export default function WalletPage() {
-    const { user, setUser} = useContext(UserContext)
+    const { user, setUser } = useContext(UserContext)
     const navigate = useNavigate()
 
     const [history, setHistory] = useState([])
+
+    const [render, setRender] = useState(false)
 
     useEffect(() => {
         if (localStorage.getItem("user")) {
             const data = JSON.parse(localStorage.getItem("user"))
             setUser(data)
+            setRender(false)
 
             axios.get(BackEndServer_Wallet, { headers: { Authorization: `Bearer ${data.token}`, User: data.email } })
-            .then(res =>{
-                setHistory(...history, res.data)
-            })
-            .catch(err=>{
-                console.log(err)
-                if(err.response.status === 401){
-                    localStorage.removeItem("user")
-                    navigate("/")
-                }
-            })
+                .then(res => {
+                    setHistory(res.data)
+                })
+                .catch(err => {
+                    if (err.response.status === 401) {
+                        localStorage.removeItem("user")
+                        navigate("/")
+                    }
+                })
 
         } else {
             navigate("/")
         }
-    }, [])
+    }, [render])
 
-    function logOut(){
+    function logOut() {
 
-        axios.post(BackEndServer_LogOut, {} ,{headers: {Authorization: `Bearer ${user.token}`, User: user.email}})
+        axios.post(BackEndServer_LogOut, {}, { headers: { Authorization: `Bearer ${user.token}`, User: user.email } })
             .then(() => {
                 localStorage.removeItem("user")
                 navigate("/")
             })
-            .catch(err =>{
-                if(err.response.status === 401){
+            .catch(err => {
+                if (err.response.status === 401) {
                     localStorage.removeItem("user")
                     navigate("/")
-                }else{
+                } else {
                     navigate("/")
                 }
             })
@@ -58,7 +60,9 @@ export default function WalletPage() {
                 <h2>Greeting, {user.name}</h2>
                 <ion-icon name="log-out-outline" onClick={() => logOut()}></ion-icon>
             </header>
-            <WalletHistory history={history} />
+            
+            <WalletHistory history={history} render={setRender} /> :
+             
             <footer className="actions">
                 <button className="short" onClick={() => navigate(`/${user.name}/wallet/input`)}>
                     <ion-icon name="add-circle-outline"></ion-icon>

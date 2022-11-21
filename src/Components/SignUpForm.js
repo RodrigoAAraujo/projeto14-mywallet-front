@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { BackEndServer_SignUp } from "../Settings/urls"
 import PasswordAlert from "./PasswordAlert"
 
@@ -9,8 +9,6 @@ export default function SignInForm(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirm, setConfirm] = useState("")
-
-    const navigate = useNavigate()
 
     const [shake, setShake] = useState(false)
     const [extraInfo, setExtraInfo] = useState("")

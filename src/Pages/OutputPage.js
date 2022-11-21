@@ -1,12 +1,10 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import CurrencyInput from "react-currency-input-field"
-import styled from "styled-components"
 import { UserContext } from "../API/user"
 import axios from "axios"
 import { BackEndServer_Wallet } from "../Settings/urls"
 import dayjs from "dayjs"
-import { White } from "../Settings/colors"
 import FormStyle from "../Assets/Styles/FormStyle"
 
 
