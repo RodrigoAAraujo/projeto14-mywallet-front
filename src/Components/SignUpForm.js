@@ -1,8 +1,11 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { BackEndServer_SignUp } from "../Settings/urls"
 import PasswordAlert from "./PasswordAlert"
+import { LoaderContext } from "../API/load"
+import { ThreeDots } from "react-loader-spinner"
+import { White } from "../Settings/colors"
 
 export default function SignInForm(){
     const [name, setName] = useState("")
@@ -13,6 +16,8 @@ export default function SignInForm(){
     const [shake, setShake] = useState(false)
     const [extraInfo, setExtraInfo] = useState("")
     const [created, setCreated] = useState(false)
+
+    const {load, setLoad} = useContext(LoaderContext)
     
     function SingUp(e){
         e.preventDefault()
@@ -28,13 +33,17 @@ export default function SignInForm(){
             password,
         }
 
+        setLoad(true)
+
         axios.post(BackEndServer_SignUp, body)
             .then((res) => {
                 setShake(true)
                 setCreated(true)
+                setLoad(false)
             })
             .catch((err) => {
                 setShake(true)
+                setLoad(false)
                 setExtraInfo(err.response.data)
             })
     }
@@ -55,7 +64,12 @@ export default function SignInForm(){
 
             <PasswordAlert password={password} equal={confirm} extra={extraInfo} shake={shake} setShake={setShake} created={created}/>
 
-            <button className="long" type="submit">Sign up</button>
+            <button className="long" type="submit" disabled={load}>
+                {load?
+                    <ThreeDots color={White} height="20" width="40" />:
+                    `Sign Up`
+                }
+            </button>
             <Link to="/">Have an account? Sign in</Link>
         </form>
     )

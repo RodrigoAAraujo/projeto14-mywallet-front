@@ -5,6 +5,8 @@ import styled from "styled-components"
 import { UserContext } from "../API/user"
 import { Black, Blue, Gray, LighterGray, LightGray, StrongRed, White } from "../Settings/colors"
 import { BackEndServer_Wallet } from "../Settings/urls"
+import { LoaderContext } from "../API/load"
+import { ThreeDots } from "react-loader-spinner"
 
 export default function WalletHistory({ history, render}) {
     let total = 0
@@ -47,18 +49,24 @@ export default function WalletHistory({ history, render}) {
 function Action({ action, render}) {
     const { _id, date, description, value, type } = action
     const { user } = useContext(UserContext)
+    const {load, setLoad} = useContext(LoaderContext)
+
     const [deleteScreen, setDeleteScreen] = useState(false)
 
     const navigate = useNavigate()
 
     function deleteItem() {
+        setLoad(true)
+
         axios.delete(`${BackEndServer_Wallet}/${_id}`, { headers: { Authorization: `Bearer ${user.token}`, User: user.email } })
             .then(() => {
+                setLoad(false)
                 render(true)
             })
             .catch(() => {
                 localStorage.removeItem("user")
                 navigate("/")
+                setLoad(false)
             })
     }
 
@@ -80,8 +88,18 @@ function Action({ action, render}) {
                     <h1> Confirm:</h1>
 
                     <div>
-                        <button className="confirm" onClick={() => deleteItem()}>Yes</button>
-                        <button className="back" onClick={() => setDeleteScreen(false)}>Go back</button>
+                        <button className="confirm" onClick={() => deleteItem()} disabled={load} >
+                            {load?
+                                <ThreeDots color={White} height="16" width="32" />:
+                                `Delete`
+                            }
+                        </button>
+                        <button className="back" onClick={() => setDeleteScreen(false)} disabled={load}>
+                            {load?
+                                <ThreeDots color={White} height="16" width="32" />:
+                                `Go Back`
+                            }
+                        </button>
                     </div>
 
                 </DeleteScreen>

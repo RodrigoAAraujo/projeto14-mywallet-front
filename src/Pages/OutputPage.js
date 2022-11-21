@@ -6,13 +6,16 @@ import axios from "axios"
 import { BackEndServer_Wallet } from "../Settings/urls"
 import dayjs from "dayjs"
 import FormStyle from "../Assets/Styles/FormStyle"
-
+import { LoaderContext } from "../API/load"
+import { ThreeDots } from "react-loader-spinner"
+import { White } from "../Settings/colors"
 
 export default function OutputPage() {
     const [value, setValue] = useState()
     const [description, setDescription] = useState("")
     const navigate = useNavigate()
     const {setUser} = useContext(UserContext)
+    const {load, setLoad} = useContext(LoaderContext)
 
     const [error, setError] = useState("")
 
@@ -30,10 +33,13 @@ export default function OutputPage() {
                 type: "loss"
             }
 
+            setLoad(true)
+
             axios.post(BackEndServer_Wallet, body, {headers: {Authorization: data.token, User: data.email}})
                 .then(res =>{
                     setError("")
                     setDescription("")
+                    setLoad(false)
                 })
                 .catch(err =>{
                     if(err.response.status === 401){
@@ -42,6 +48,7 @@ export default function OutputPage() {
                     }
                     setError(err.response.data)
                     setDescription("")
+                    setLoad(false)
                 })
 
         }else {
@@ -67,7 +74,12 @@ export default function OutputPage() {
                 className={error.length > 0? "error" : null} maxLength={50}
                 value={description} onChange={(e) => setDescription(e.target.value)} />
 
-                <button className="long" type="submit">Save Expense</button>
+                <button className="long" type="submit" disabled={load}>
+                    {load?
+                        <ThreeDots color={White} height="20" width="40" />:
+                        `Save Expense`
+                    }
+                </button>
             </form>
         </FormStyle>
     )

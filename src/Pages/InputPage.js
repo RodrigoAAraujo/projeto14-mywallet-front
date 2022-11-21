@@ -6,6 +6,9 @@ import axios from "axios"
 import { BackEndServer_Wallet } from "../Settings/urls"
 import dayjs from "dayjs"
 import FormStyle from "../Assets/Styles/FormStyle"
+import { LoaderContext } from "../API/load"
+import { ThreeDots } from "react-loader-spinner"
+import { White } from "../Settings/colors"
 
 
 export default function InputPage() {
@@ -13,6 +16,7 @@ export default function InputPage() {
     const [description, setDescription] = useState("")
     const navigate = useNavigate()
     const {setUser} = useContext(UserContext)
+    const {load, setLoad} = useContext(LoaderContext)
 
     const [error, setError] = useState("")
 
@@ -30,18 +34,23 @@ export default function InputPage() {
                 type: "profit"
             }
 
+            setLoad(true)
+
             axios.post(BackEndServer_Wallet, body, {headers: {Authorization: `Bearer ${data.token}`, User: data.email}})
                 .then(res =>{
                     setError("")
                     setDescription("")
+                    setLoad(false)
                 })
                 .catch(err =>{
                     if(err.response.status === 401){
                         localStorage.removeItem("user")
                         navigate("/")
+                        setLoad(false)
                     }
                     setError(err.response.data)
                     setDescription("")
+                    setLoad(false)
                 })
 
         }else {
@@ -67,7 +76,12 @@ export default function InputPage() {
                 className={error.length > 0? "error" : null} maxLength={50}
                 value={description} onChange={(e) => setDescription(e.target.value)} />
 
-                <button className="long" type="submit">Save Entry</button>
+                <button className="long" type="submit" disabled={load}>
+                    {load?
+                        <ThreeDots color={White} height="20" width="40" />:
+                        `Save Entry`
+                    }
+                </button>
             </form>
         </FormStyle>
     )

@@ -3,6 +3,9 @@ import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { UserContext } from "../API/user"
 import { BackEndServer_SignIn } from "../Settings/urls"
+import { LoaderContext } from "../API/load"
+import { ThreeDots } from "react-loader-spinner"
+import { White } from "../Settings/colors"
 
 
 export default function SignInForm() {
@@ -10,6 +13,8 @@ export default function SignInForm() {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
     const {setUser} = useContext(UserContext)
+    const {load, setLoad} = useContext(LoaderContext)
+
     const [error, setError] = useState("")
 
     function SingIn(e) {
@@ -19,19 +24,21 @@ export default function SignInForm() {
             email,
             password
         }
+        setLoad(true)
 
         axios.post(BackEndServer_SignIn, body)
             .then((res) => {
                 setUser(res.data)
+                setLoad(false)
                 localStorage.setItem("user", JSON.stringify(res.data))
                 navigate(`/${res.data.name}/wallet`)
             })
             .catch((err) => {
-                setError(err.response.data)
                 setEmail("")
                 setPassword("")
+                setError(err.response.data)
+                setLoad(false)
             })
-
     }
 
     return (
@@ -44,7 +51,12 @@ export default function SignInForm() {
             required type="password" value={password} 
             onChange={(e) => setPassword(e.target.value)}/>
 
-            <button className="long" type="submit">Sign in</button>
+            <button className="long" type="submit" disabled={load}>
+                {load?
+                    <ThreeDots color={White} height="20" width="40" />:
+                    `Sign In`
+                }
+            </button>
             <Link to="/sign-up">First time? Sign up!</Link>
         </form>
     )

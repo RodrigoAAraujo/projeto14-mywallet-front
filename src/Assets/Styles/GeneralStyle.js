@@ -66,6 +66,9 @@ const GeneralStyle = createGlobalStyle`
         width:90%;
         max-width: 500px;
         font-size: 20px;
+
+        display: flex;
+        justify-content: center;
     }
     .short{
         aspect-ratio: 16/10;

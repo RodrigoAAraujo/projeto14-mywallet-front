@@ -21,14 +21,12 @@ export default function WalletPage() {
             setRender(false)
 
             axios.get(BackEndServer_Wallet, { headers: { Authorization: `Bearer ${data.token}`, User: data.email } })
-                .then(res => {
+                .then((res) => {
                     setHistory(res.data)
                 })
-                .catch(err => {
-                    if (err.response.status === 401) {
-                        localStorage.removeItem("user")
-                        navigate("/")
-                    }
+                .catch((err) => {
+                    localStorage.removeItem("user")
+                    navigate("/") 
                 })
 
         } else {
@@ -60,7 +58,7 @@ export default function WalletPage() {
                 <ion-icon name="log-out-outline" onClick={() => logOut()}></ion-icon>
             </header>
             
-            <WalletHistory history={history} render={setRender} /> :
+            <WalletHistory history={history} render={setRender} /> 
              
             <footer className="actions">
                 <button className="short" onClick={() => navigate(`/${user.name}/wallet/input`)}>
